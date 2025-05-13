@@ -1,4 +1,4 @@
-I was working on a [bug](https://github.com/aidenybai/react-scan/issues/355) reported on React Scan, which was related to forwardRef. So, I decided to dive deep into how forwardRef works internally—and here's what I learned.
+I was working on a [bug](https://github.com/aidenybai/react-scan/issues/355) reported on React Scan, which was related to `forwardRef`. So, I decided to dive deep into how `forwardRef` works internally—and here's what I learned.
 
 *React version: [19.1.0](https://github.com/facebook/react/releases/tag/v19.1.0)*
 
@@ -11,7 +11,9 @@ const SomeComponent = forwardRef(render)
 
 It's useful when you want to pass a ref to a DOM node inside a functional component.
 
-But we're not here to talk about how to use it—let’s dive into the internals and see what we can find!
+But we're not here to talk about how to use it. Let’s dive into the internals and see what we can find!
+
+## What happens when we call forwardRef?
 
 Let’s say we have a component called with `forwardRef`
 
@@ -52,7 +54,7 @@ export function forwardRef<Props, ElementType: React$ElementType>(
 ```
 
 Based on the source code, `forwardRef` returns a object named `elementType`, with the following properties:
-* $$typeof: a symbol (REACT_FORWARD_REF_TYPE) that tells React this is a forwardRef element.
+* `$$typeof`: a symbol (`REACT_FORWARD_REF_TYPE`) that tells React this is a forwardRef element.
 * render: the component function that will be called during rendering.
 
 `REACT_FORWARD_REF_TYPE` is just a symbol to tell what element it is. `render` will be the Component it will render.
@@ -64,7 +66,7 @@ This object is assigned to the type property in the Fiber node. The type in a Fi
 
 ## What happens during Render phase?
 
-As we know, React elements are internally converted to a Fiber tree. During the conversion, if it is a forwardRef (by checking if `typeof type === 'object’` and `$$typeof === REACT_FORWARD_REF_TYPE`), React will create a special Fiber with `ForwardRef` tag.
+As we know, React elements are internally converted to a Fiber tree. During the conversion, if it is a `forwardRef` (by checking if `typeof type === 'object’` and `$$typeof === REACT_FORWARD_REF_TYPE`), React will create a special Fiber with `ForwardRef` tag.
 
 In the render phase, React will specially handle it when the tag is `ForwardRef`. It will call `renderWithHooks` with the ref
 
