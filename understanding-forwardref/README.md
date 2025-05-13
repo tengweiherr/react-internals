@@ -17,7 +17,7 @@ Let’s say we have a component called with `forwardRef`
 
 ```
 const Text = forwardRef((props, ref) => {
-	return <p ref={ref}>Hello World!</p>
+  return <p ref={ref}>Hello World!</p>
 })
 ```
 
@@ -26,7 +26,7 @@ After compilation, the JSX is transformed into `React.createElement`. This is wh
 ```
 const Text = forwardRef((props, ref) => {
   return React.createElement("p", {
-	  ref: ref,
+    ref: ref,
     children: "Hello World!"
   });
 });
@@ -42,11 +42,11 @@ export function forwardRef<Props, ElementType: React$ElementType>(
   ) => React$Node,
 ) {
 
-	const elementType = {
+  const elementType = {
     $$typeof: REACT_FORWARD_REF_TYPE,
     render,
   };
-  
+
   return elementType
 }
 ```
@@ -88,7 +88,7 @@ Now it is successfully passed to its child
 ```
 (propsWithoutRef, ref) => {
   return React.createElement("p", {
-	  ref: ref,
+    ref: ref,
     children: "Hello World!"
   });
 };
@@ -123,12 +123,11 @@ It loses the ref
 
 (nextProps) => {
   return React.createElement("p", {
-	  ref: ref, <--- no reference
+    ref: ref, <--- no reference
     children: "Hello World!"
   });
 };
 ```
-
 
 ## Thoughts
 
