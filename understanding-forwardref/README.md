@@ -5,7 +5,7 @@ I was working on a [bug](https://github.com/aidenybai/react-scan/issues/355) rep
 ## What does forwardRef do?
 
 According to [react.dev](https://react.dev/reference/react/forwardRef), forwardRef lets your component expose a DOM node to parent component with a ref.
-```
+```jsx
 const SomeComponent = forwardRef(render)
 ```
 
@@ -15,7 +15,7 @@ But we're not here to talk about how to use it—let’s dive into the internals
 
 Let’s say we have a component called with `forwardRef`
 
-```
+```jsx
 const Text = forwardRef((props, ref) => {
   return <p ref={ref}>Hello World!</p>
 })
@@ -23,7 +23,7 @@ const Text = forwardRef((props, ref) => {
 
 After compilation, the JSX is transformed into `React.createElement`. This is what the code looks like:
 
-```
+```jsx
 const Text = forwardRef((props, ref) => {
   return React.createElement("p", {
     ref: ref,
@@ -34,7 +34,7 @@ const Text = forwardRef((props, ref) => {
 
 Now, let’s look at what `forwardRef` function returns and assigns to the `Text` variable. The following is the actual source code of `forwardRef` in React codebase.
 
-```
+```jsx
 export function forwardRef<Props, ElementType: React$ElementType>(
   render: (
     props: Props,
@@ -68,7 +68,7 @@ As we know, React elements are internally converted to a Fiber tree. During the 
 
 In the render phase, React will specially handle it when the tag is `ForwardRef`. It will call `renderWithHooks` with the ref
 
-```
+```jsx
 renderWithHooks(
   current,
   workInProgress,
@@ -80,12 +80,12 @@ renderWithHooks(
 ```
 
 Inside the function, it calls the inner component with the outer ref like
-```
+```jsx
 Component(propsWithoutRef, ref)
 ```
 
 Now it is successfully passed to its child
-```
+```jsx
 (propsWithoutRef, ref) => {
   return React.createElement("p", {
     ref: ref,
